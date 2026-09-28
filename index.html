@@ -94,6 +94,35 @@
   footer a { color: var(--gold-soft); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
   footer .sep { margin: 0 0.6rem; color: #56617a; }
+  /* Testimonials + feedback form (Supabase app_feedback, migration block 24) */
+  .quotes { display: grid; gap: 1rem; margin-top: 0.5rem; }
+  .quote { background: #fff; border-left: 3px solid var(--gold); padding: 1rem 1.2rem; border-radius: 4px; }
+  .quote .stars { color: var(--gold); letter-spacing: 0.1em; font-size: 0.95rem; }
+  .quote p { font-style: italic; margin-top: 0.3rem; }
+  .quote .who { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  form.feedback { margin-top: 1rem; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 0.95rem; }
+  form.feedback label { display: block; margin-top: 1rem; color: var(--navy); }
+  form.feedback textarea, form.feedback input[type=text] {
+    width: 100%; margin-top: 0.35rem; padding: 0.6rem 0.7rem; font: inherit;
+    border: 1px solid #c9ccd4; border-radius: 6px; background: #fff; color: var(--ink);
+  }
+  form.feedback textarea { min-height: 7rem; resize: vertical; }
+  .star-picker { display: flex; gap: 0.2rem; margin-top: 0.3rem; }
+  .star-picker button {
+    background: none; border: none; cursor: pointer; font-size: 2rem; line-height: 1;
+    color: var(--gold); padding: 0.1rem 0.2rem;
+  }
+  form.feedback .check { display: flex; gap: 0.5rem; align-items: flex-start; }
+  form.feedback .check input { margin-top: 0.3rem; }
+  form.feedback button[type=submit] {
+    margin-top: 1.2rem; background: var(--navy); color: var(--cream); border: none;
+    padding: 0.7rem 1.6rem; border-radius: 6px; font: inherit; cursor: pointer;
+  }
+  form.feedback button[type=submit]:disabled { opacity: 0.6; cursor: default; }
+  .form-status { margin-top: 0.8rem; min-height: 1.4em; }
+  .form-status.ok { color: #2e6b3a; }
+  .form-status.err { color: #a33a2a; }
+  .hidden { display: none; }
 </style>
 </head>
 <body>
@@ -121,6 +150,11 @@
     </ul>
   </section>
 
+  <section id="testimonials" class="hidden" aria-live="polite">
+    <h2>What travellers say</h2>
+    <div class="quotes" id="quote-list"></div>
+  </section>
+
   <section>
     <h2>Free, and staying that way</h2>
     <p>Core Mass-finding will always be free, for everyone. Catholic Traveller is a focused traveller's companion, not a general Catholic lifestyle platform — no adverts, no social feed, no distractions. Just help getting to Mass.</p>
@@ -132,6 +166,25 @@
     <p class="quiet" style="margin-top:0.8rem;">Want to help test the app before release, or help verify Mass times in your area? We'd love to hear from you: <a href="mailto:review@catholictraveller.org">review@catholictraveller.org</a></p>
   </section>
 
+  <section id="feedback">
+    <h2>Rate Catholic Traveller</h2>
+    <p>How are you finding Catholic Traveller? Tell us what works, what doesn't, and what would make it more useful on your travels. Reviewing a particular church? Use <em>Leave a review on Google Maps</em> on that church's page in the app instead.</p>
+    <form class="feedback" id="feedback-form" novalidate>
+      <label id="rating-label">Your rating (optional)</label>
+      <div class="star-picker" role="group" aria-labelledby="rating-label" id="star-picker"></div>
+      <label for="fb-comment">Your comments (optional)</label>
+      <textarea id="fb-comment" maxlength="2000"></textarea>
+      <label class="check"><input type="checkbox" id="fb-quote"> <span>You may quote this on the Catholic Traveller website</span></label>
+      <div id="fb-name-wrap" class="hidden">
+        <label for="fb-name">Show it as (optional)</label>
+        <input type="text" id="fb-name" maxlength="60" placeholder="e.g. Anne, Leeds — first name or town only">
+      </div>
+      <button type="submit" id="fb-submit">Send feedback</button>
+      <p class="form-status" id="fb-status" role="status"></p>
+    </form>
+    <p class="quiet">Nothing you send is published unless you tick the box above and we choose to feature it. See our <a href="privacy.html">Privacy Policy</a>.</p>
+  </section>
+
   <section id="support">
     <h2>Supporting the running of the app</h2>
     <p>Catholic Traveller is built and run by one parishioner, in his own time, and finding a Mass will always be free — no adverts, no subscription, and no feature ever placed behind a donation.</p>
@@ -141,6 +194,8 @@
 </main>
 
 <footer>
+  <a href="#feedback">Rate the app</a>
+  <span class="sep">·</span>
   <a href="#support">Support the app</a>
   <span class="sep">·</span>
   <a href="mailto:admin@catholictraveller.org">admin@catholictraveller.org</a>
@@ -152,5 +207,112 @@
   <span>© 2026 Catholic Traveller</span>
 </footer>
 
+
+<script>
+// Feedback form + "What travellers say", backed by Supabase (app_feedback,
+// published_testimonials — migration block 24 in the app repo). The key is
+// the public publishable key the app itself ships with; inserts are
+// rate-limited and forced to status 'new' in the database.
+(function () {
+  var API = 'https://pxeerauibgebshfoejsx.supabase.co/rest/v1';
+  var KEY = 'sb_publishable_BkPfGSR7I6xzkvFdpVd-3Q_6Lz6-5fy';
+  var headers = { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+
+  function deviceId() {
+    try {
+      var id = localStorage.getItem('ct_device_id');
+      if (!id) {
+        id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now());
+        localStorage.setItem('ct_device_id', id);
+      }
+      return id;
+    } catch (e) { return null; }
+  }
+
+  // Testimonials — the section stays hidden until something is published.
+  fetch(API + '/rpc/published_testimonials', { method: 'POST', headers: headers, body: '{}' })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) {
+      if (!rows || !rows.length) return;
+      var list = document.getElementById('quote-list');
+      rows.forEach(function (q) {
+        var card = document.createElement('div'); card.className = 'quote';
+        if (q.rating) {
+          var st = document.createElement('div'); st.className = 'stars';
+          st.textContent = '★★★★★'.slice(0, q.rating) + '☆☆☆☆☆'.slice(0, 5 - q.rating);
+          st.setAttribute('aria-label', q.rating + ' out of 5 stars');
+          card.appendChild(st);
+        }
+        var p = document.createElement('p'); p.textContent = '“' + q.comment + '”'; card.appendChild(p);
+        if (q.display_name) {
+          var who = document.createElement('div'); who.className = 'who'; who.textContent = '— ' + q.display_name; card.appendChild(who);
+        }
+        list.appendChild(card);
+      });
+      document.getElementById('testimonials').classList.remove('hidden');
+    })
+    .catch(function () {});
+
+  // Star picker: click a star to set, click it again to clear.
+  var rating = null;
+  var picker = document.getElementById('star-picker');
+  var stars = [];
+  function paint() {
+    stars.forEach(function (b, i) {
+      b.textContent = rating && i < rating ? '★' : '☆';
+      b.setAttribute('aria-pressed', rating === i + 1 ? 'true' : 'false');
+    });
+  }
+  for (var i = 1; i <= 5; i++) {
+    (function (n) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', n + (n === 1 ? ' star' : ' stars'));
+      b.addEventListener('click', function () { rating = rating === n ? null : n; paint(); });
+      picker.appendChild(b); stars.push(b);
+    })(i);
+  }
+  paint();
+
+  var quote = document.getElementById('fb-quote');
+  quote.addEventListener('change', function () {
+    document.getElementById('fb-name-wrap').classList.toggle('hidden', !quote.checked);
+  });
+
+  var form = document.getElementById('feedback-form');
+  var status = document.getElementById('fb-status');
+  var submit = document.getElementById('fb-submit');
+  function say(msg, cls) { status.textContent = msg; status.className = 'form-status ' + (cls || ''); }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var comment = document.getElementById('fb-comment').value.trim();
+    var name = document.getElementById('fb-name').value.trim();
+    if (!rating && !comment) { say('Please choose a star rating or write a comment.', 'err'); return; }
+    var row = { rating: rating, may_quote: quote.checked, source: 'website', submission_device_id: deviceId() };
+    if (comment) row.comment = comment;
+    if (quote.checked && name) row.display_name = name;
+    submit.disabled = true; say('Sending…');
+    fetch(API + '/app_feedback', {
+      method: 'POST',
+      headers: Object.assign({ Prefer: 'return=minimal' }, headers),
+      body: JSON.stringify(row)
+    }).then(function (r) {
+      if (r.ok) {
+        form.reset(); rating = null; paint();
+        document.getElementById('fb-name-wrap').classList.add('hidden');
+        say('Thank you — your feedback has been sent.', 'ok');
+        return;
+      }
+      return r.json().then(function (err) {
+        var friendly = err && (err.hint === 'rate_limited' || err.hint === 'invalid');
+        say(friendly ? err.message : 'Could not send right now — please try again later.', 'err');
+      });
+    }).catch(function () {
+      say('Could not send right now — please check your connection and try again.', 'err');
+    }).then(function () { submit.disabled = false; });
+  });
+})();
+</script>
 </body>
 </html>
