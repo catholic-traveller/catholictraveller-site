@@ -30,7 +30,7 @@
 </header>
 
 <main>
-  <p class="meta">Effective date: 28 September 2026 (updated for problem reports) · Applies to the Catholic Traveller web app, the Catholic Traveller mobile application, and this website.</p>
+  <p class="meta">Effective date: 1 October 2026 (updated: what is stored on your device) · Applies to the Catholic Traveller web app, the Catholic Traveller mobile application, and this website.</p>
 
   <p>Catholic Traveller exists to help Catholics find suitable Masses whilst travelling. We collect as little information about you as we can, and we do not sell or share your data with advertisers. There are no adverts in the app.</p>
 
@@ -39,7 +39,7 @@
     <li><strong>Location.</strong> If you grant location permission, your device's location is used to find churches and Masses near you or along your route. Location is used to perform your search at the time you make it; it is not used to track you, is not collected in the background, and is not stored on our servers as a location history.</li>
     <li><strong>Place searches.</strong> As you type a town, postcode or place name, the text is sent to a place-search service (listed below) so it can suggest matches. When you run a search, the start and destination points are sent through our server to our routing provider to calculate the route and travel times.</li>
     <li><strong>Reports and suggestions.</strong> If you choose to confirm or correct a Mass time, suggest a missing church, or report another issue, we store what you submit (the church, the details you entered, any note you add, and the time it was submitted) so it can be checked before anything changes in the app. Reports are never published with any identity attached to them. Please do not include personal details such as your name or phone number in free-text notes.</li>
-    <li><strong>Feedback about the app.</strong> If you rate Catholic Traveller or send comments — in the app or on this website — we store your rating, your comments, whether you are happy to be quoted, the name you chose to show (if any), and the anonymous device identifier described below. Feedback is only read by us. We publish a comment on this website only if you ticked the box allowing it and we choose to feature it, and then only the comment, the rating and the name you chose. To have a comment removed, email us at the address below.</li>
+    <li><strong>Feedback about the app.</strong> If you rate Catholic Traveller or send comments in the app, we store your rating, your comments, whether you are happy to be quoted, the name you chose to show (if any), and the anonymous device identifier described below. Feedback is only read by us. We publish a comment on this website only if you ticked the box allowing it and we choose to feature it, and then only the comment, the rating and the name you chose. To have a comment removed, email us at the address below.</li>
     <li><strong>Problem reports.</strong> If something goes wrong while you use the app &mdash; it crashes, a search or route calculation fails, or a submission can't be saved &mdash; the app sends us a short technical report so we can fix it: what failed, on which screen, the type of device and browser, the app version, the time, and the anonymous device identifier described below. It does not include your location, what you searched for, or anything that identifies you. Reports are deleted after 90 days.</li>
     <li><strong>Automated checking.</strong> Submitted reports and suggestions are checked by an automated reviewer, which compares them with the parish's own website. To do this, the submission and the relevant parish web page are sent to Google's Gemini AI service. An administrator reviews anything the automated check cannot confirm.</li>
     <li><strong>Protection against abuse.</strong> To stop automated spam and to keep our free routing allowance available for everyone, we count how many submissions and route searches come from each connection. For this we keep a scrambled (one-way hashed) form of your IP address — never the address itself — alongside a count. These counts are deleted automatically: within an hour for route searches and within two days for submissions.</li>
@@ -47,10 +47,12 @@
 
   <h2>Stored on your device</h2>
   <ul>
-    <li><strong>An anonymous device identifier</strong> — a random code created the first time you submit a report or feedback, or the app sends a problem report. It is not linked to your name or any account; it only lets us tell several different people confirming a Mass time apart from one person confirming it several times, and it is sent with any report you submit.</li>
+    <li><strong>An anonymous device identifier</strong> — a random code created the first time you submit a report or feedback, or the app sends a problem report. It is not linked to your name or any account. It is used only to tell several different people confirming a Mass time apart from one person confirming it several times, to limit how many submissions and problem reports one device can send (to stop spam and abuse), and to tell whether a fault is affecting one device or many. It is sent with any report you submit.</li>
     <li><strong>Your recent place searches</strong> — the last five places you searched for, so you can pick them again quickly. These stay on your device and are not sent to us. You can remove them at any time with <em>Clear recent searches</em> in the app.</li>
+    <li><strong>Your settings and choices</strong> — whether you prefer miles or kilometres, that you have seen the welcome screen, that you have dismissed the "add to home screen" banner, and that you have answered the "Found this useful?" prompt (so you are not asked again).</li>
   </ul>
-  <p>In the web app these are kept in your browser's local storage. Clearing your browser's site data for Catholic Traveller removes them.</p>
+  <p>We do not use cookies. In the web app these items are kept in your browser's local storage; none of them is used for advertising, analytics or tracking. They are either needed for features you use, or remember a choice you made, which is why we do not ask for consent to store them. To remove them, clear your browser's site data for app.catholictraveller.org (on iPhone: Settings → Safari → Advanced → Website Data; in Chrome: the padlock or settings icon by the address → Site settings → Delete data). The app keeps working afterwards; it simply forgets your choices.</p>
+  <p>The test version of the app (test.catholictraveller.org) is protected by Cloudflare, which may set a security cookie (<code>cf_clearance</code>) to show your browser has passed its check. This website, catholictraveller.org, stores nothing on your device.</p>
 
   <h2>What we do not collect</h2>
   <ul>
@@ -84,7 +86,7 @@
   <p>Under UK data protection law (UK GDPR), you have rights over personal data held about you, including access, correction, and erasure. Because the app holds so little, in most cases there will be nothing to retrieve — but if you have submitted a report or contacted us by email and would like it reviewed or deleted, write to us at the address below and we will respond. You also have the right to complain to the Information Commissioner's Office (<a href="https://ico.org.uk/">ico.org.uk</a>).</p>
 
   <h2>This website</h2>
-  <p>This website is a static informational page hosted on GitHub Pages, with DNS and traffic served through Cloudflare. Those providers may process standard technical logs (such as IP addresses) to deliver the site. This website itself sets no cookies and runs no analytics.</p>
+  <p>This website is a static informational page hosted on GitHub Pages, with its domain name (DNS) managed by Cloudflare; the web app is served by Cloudflare Pages. Those providers may process standard technical logs (such as IP addresses) to deliver the site. This website itself sets no cookies and runs no analytics.</p>
   <p>The feedback form and the "What travellers say" section on the home page talk directly to our Supabase database. If you send feedback, your browser keeps a random anonymous identifier in its local storage (the same kind the app uses) so repeated submissions can be told apart and limited; it is not linked to your identity.</p>
 
   <h2>Changes</h2>
