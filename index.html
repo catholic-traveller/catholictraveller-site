@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catholic Traveller — Find Mass anywhere in the UK</title>
 <meta name="description" content="Catholic Traveller helps Catholics find suitable Masses whilst travelling in the United Kingdom. Saturday Vigil and Sunday Mass times, route planning, parking and accessibility information. Free to use on any phone or laptop at app.catholictraveller.org.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1b2a4a">
 <style>
   :root {
     --navy: #1b2a4a;
@@ -28,9 +32,11 @@
     text-align: center;
     padding: 4.5rem 1.5rem 4rem;
   }
-  .cross {
-    width: 44px; height: 44px; margin: 0 auto 1.4rem;
+  .app-icon {
+    width: 96px; height: 96px; margin: 0 auto 1.4rem;
     display: block;
+    border-radius: 22px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(229, 201, 107, 0.25);
   }
   h1 {
     font-size: clamp(2rem, 5vw, 3rem);
@@ -104,10 +110,7 @@
 <body>
 
 <header>
-  <svg class="cross" viewBox="0 0 44 44" aria-hidden="true">
-    <rect x="19" y="4" width="6" height="36" rx="1.5" fill="#c9a227"/>
-    <rect x="8" y="14" width="28" height="6" rx="1.5" fill="#c9a227"/>
-  </svg>
+  <img class="app-icon" src="icons/icon-192.png" width="96" height="96" alt="">
   <h1>Catholic <span class="gold">Traveller</span></h1>
   <p class="tagline">"I am travelling today. Where and when can I conveniently attend Mass?"</p>
   <p class="sub">Find Saturday Vigil and Sunday Masses on your route or near where you're going, anywhere in the UK.</p>
