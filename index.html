@@ -46,18 +46,6 @@
     max-width: 34em;
     margin-left: auto; margin-right: auto;
   }
-  .badge {
-    display: inline-block;
-    margin-top: 1.8rem;
-    border: 1px solid var(--gold);
-    color: var(--gold-soft);
-    padding: 0.45rem 1.1rem;
-    border-radius: 999px;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
   .open-app {
     display: inline-block;
     margin-top: 1.8rem;
@@ -72,8 +60,14 @@
   }
   .open-app:hover, .open-app:focus-visible { background: var(--gold-soft); }
   main { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
-  .lead { font-size: 1.15rem; }
-  .lead strong { color: var(--navy); }
+  .sub {
+    margin: 1.2rem auto 0; max-width: 30em;
+    font-size: clamp(1.05rem, 2.4vw, 1.2rem); color: var(--cream);
+  }
+  .note {
+    margin-top: 0.8rem; font-size: 0.85rem; color: #aab4c8;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
   section { margin-top: 2.6rem; }
   h2 {
     font-size: 1.35rem;
@@ -84,16 +78,18 @@
     padding-bottom: 0.2rem;
     margin-bottom: 1rem;
   }
-  ul.features { list-style: none; margin-top: 0.5rem; }
-  ul.features li {
-    padding: 0.55rem 0 0.55rem 1.9rem;
-    position: relative;
+  .cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .card { background: #fff; border-top: 3px solid var(--gold); border-radius: 4px; padding: 1rem 1.1rem; }
+  .card h3 { font-size: 1.05rem; font-weight: normal; color: var(--navy); margin-bottom: 0.3rem; }
+  .card p { font-size: 0.95rem; color: var(--ink); }
+  main > section:first-child { margin-top: 0; }
+  details.rate summary {
+    display: inline-block; cursor: pointer; list-style: none;
+    border: 1px solid var(--navy); color: var(--navy); border-radius: 6px;
+    padding: 0.55rem 1.3rem; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
-  ul.features li::before {
-    content: "✠";
-    position: absolute; left: 0.2rem;
-    color: var(--gold);
-  }
+  details.rate summary::-webkit-details-marker { display: none; }
+  details.rate[open] summary { display: none; }
   .quiet { color: var(--muted); font-size: 0.98rem; }
   a { color: var(--navy); }
   footer {
@@ -147,20 +143,20 @@
   </svg>
   <h1>Catholic <span class="gold">Traveller</span></h1>
   <p class="tagline">"I am travelling today. Where and when can I conveniently attend Mass?"</p>
+  <p class="sub">Find Saturday Vigil and Sunday Masses on your route or near where you're going, anywhere in the UK.</p>
   <a class="open-app" href="https://app.catholictraveller.org/">Open the app</a>
+  <p class="note">Free · works on any phone or laptop · nothing to install</p>
 </header>
 
 <main>
-  <p class="lead"><strong>Catholic Traveller</strong> helps Catholics fulfil their obligation to attend Mass whilst travelling, by making it simple to find a suitable Mass anywhere in the United Kingdom — on your route, near your destination, at a time that works for your journey.</p>
-
   <section>
     <h2>What it does</h2>
-    <ul class="features">
-      <li>Find Saturday Vigil and Sunday Masses along your route or near your destination.</li>
-      <li>See estimated travel time and detour distance for every church, so you can choose the Mass that best fits your journey.</li>
-      <li>Practical traveller information rarely found elsewhere: parking, motorway proximity, and accessibility details.</li>
-      <li>Confirm a Mass time after attending, helping keep the information accurate for the next traveller.</li>
-    </ul>
+    <div class="cards">
+      <div class="card"><h3>On your route</h3><p>Masses along the way, with the detour time for each church.</p></div>
+      <div class="card"><h3>At your destination</h3><p>Mass times near where you're going that fit your journey.</p></div>
+      <div class="card"><h3>Traveller details</h3><p>Parking, motorway access and accessibility information.</p></div>
+    </div>
+    <p class="quiet" style="margin-top:1rem;">Covers Catholic churches across the UK.</p>
   </section>
 
   <section id="testimonials" class="hidden" aria-live="polite">
@@ -168,20 +164,16 @@
     <div class="quotes" id="quote-list"></div>
   </section>
 
-  <section>
-    <h2>Free, and staying that way</h2>
-    <p>Core Mass-finding will always be free, for everyone. Catholic Traveller is a focused traveller's companion, not a general Catholic lifestyle platform — no adverts, no social feed, no distractions. Just help getting to Mass.</p>
-  </section>
-
-  <section>
-    <h2>Now open across England and Wales</h2>
-    <p>Version 1 covers Catholic parishes across England and Wales, with Scotland and Northern Ireland added as coverage expands. Catholic Traveller is a web app you can open on any phone or laptop at <a href="https://app.catholictraveller.org/">app.catholictraveller.org</a> — nothing to install, just open it and go. An Android app on Google Play will follow, for anyone who wants a home-screen icon that behaves like a native app.</p>
-    <p class="quiet" style="margin-top:0.8rem;">Want to help verify Mass times in your area, or tell us about a church we've missed? We'd love to hear from you: <a href="mailto:review@catholictraveller.org">review@catholictraveller.org</a></p>
+  <section id="support">
+    <h2>Free, no adverts</h2>
+    <p>Finding a Mass will always be free: no adverts, no subscription, no social feed. Catholic Traveller is run by one parishioner, and the best way to help is to confirm Mass times you've attended, or tell us about a church we've missed: <a href="mailto:review@catholictraveller.org">review@catholictraveller.org</a></p>
   </section>
 
   <section id="feedback">
     <h2>Rate Catholic Traveller</h2>
-    <p>How are you finding Catholic Traveller? Tell us what works, what doesn't, and what would make it more useful on your travels. Reviewing a particular church? Use <em>Leave a review on Google Maps</em> on that church's page in the app instead.</p>
+    <details class="rate" id="rate-details">
+      <summary>Leave a rating or comment</summary>
+      <p class="quiet">Tell us what works, what doesn't, and what would make it more useful on your travels. Reviewing a particular church? Use <em>Leave a review on Google Maps</em> on that church's page in the app instead.</p>
     <form class="feedback" id="feedback-form" novalidate>
       <label id="rating-label">Your rating (optional)</label>
       <div class="star-picker" role="group" aria-labelledby="rating-label" id="star-picker"></div>
@@ -196,20 +188,12 @@
       <p class="form-status" id="fb-status" role="status"></p>
     </form>
     <p class="quiet">Nothing you send is published unless you tick the box above and we choose to feature it. See our <a href="privacy.html">Privacy Policy</a>.</p>
-  </section>
-
-  <section id="support">
-    <h2>Supporting the running of the app</h2>
-    <p>Catholic Traveller is built and run by one parishioner, in his own time, and finding a Mass will always be free — no adverts, no subscription, and no feature ever placed behind a donation.</p>
-    <p>Running it isn't quite free, though: around £40 spent so far on the domain and Google Play registration, and roughly £16–18 a year after that for the domain. Web hosting itself is free, and the app-store side is Android-only for now — an iPhone build would add ~£80 a year in Apple developer fees and isn't planned unless there's clear demand to justify it.</p>
-    <p class="quiet" style="margin-top:0.8rem;">Until then, the best way to support the project is by testing it, verifying Mass times in your area, or simply spreading the word: <a href="mailto:review@catholictraveller.org">review@catholictraveller.org</a></p>
+    </details>
   </section>
 </main>
 
 <footer>
   <a href="#feedback">Rate the app</a>
-  <span class="sep">·</span>
-  <a href="#support">Support the app</a>
   <span class="sep">·</span>
   <a href="mailto:admin@catholictraveller.org">admin@catholictraveller.org</a>
   <span class="sep">·</span>
@@ -227,6 +211,10 @@
 // the public publishable key the app itself ships with; inserts are
 // rate-limited and forced to status 'new' in the database.
 (function () {
+  // The footer's "Rate the app" link (and links from elsewhere) open the form.
+  function openRating() { if (location.hash === '#feedback') document.getElementById('rate-details').open = true; }
+  openRating();
+  window.addEventListener('hashchange', openRating);
   var API = 'https://pxeerauibgebshfoejsx.supabase.co/rest/v1';
   var KEY = 'sb_publishable_BkPfGSR7I6xzkvFdpVd-3Q_6Lz6-5fy';
   var headers = { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' };
